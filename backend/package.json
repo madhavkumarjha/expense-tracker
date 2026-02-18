@@ -1,0 +1,23 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@agendajs/mongo-backend": "^3.2.0",
+    "@imagekit/nodejs": "^7.3.0",
+    "agenda": "^6.2.3",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "fastify": "^5.7.4",
+    "imagekit": "^6.0.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.2.1",
+    "nodemailer": "^8.0.1"
+  },
+  "scripts": {
+    "start": "nodemon server.js",
+    "dev": "nodemon server.js"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
