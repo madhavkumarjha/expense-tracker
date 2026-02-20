@@ -16,9 +16,9 @@ const fastify = Fastify({ logger: true });
 connectDB();
 
 fastify.register(authRoutes, { prefix: "api/auth" });
-fastify.register(userRoutes, { prefix: "api/user" });
-fastify.register(expenseRoutes, { prefix: "api/expense" });
-fastify.register(budgetRoutes, { prefix: "api/budget" });
+fastify.register(userRoutes, { prefix: "api/users" });
+fastify.register(expenseRoutes, { prefix: "api/expenses" });
+fastify.register(budgetRoutes, { prefix: "api/budgets" });
 
 // register jobs
 reactiveUsersJob(agenda);
@@ -41,6 +41,25 @@ checkBudgetJob(agenda);
   }
   
 })();
+
+fastify.setErrorHandler((error, req, reply) => {
+  // Log useful context
+  fastify.log.error({
+    method: req.method,
+    url: req.url,
+    userId: req.user?.id, // if authentication added user info
+    message: error.message,
+    stack: error.stack
+  });
+
+  // Send clean response
+  reply.code(500).send({
+    success: false,
+    message: "Internal Server Error",
+    details: error.message // optional, hide in production
+  });
+});
+
 
 
 

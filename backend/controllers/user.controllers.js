@@ -1,37 +1,45 @@
 import User from "../models/user.model.js";
 
-export const updateUser = async (req, reply) => {
-  try {
-    const { uid } = req.params;
-    const data = req.body;
-
-    const user = await User.findByIdAndUpdate(uid, data, { new: true });
-    if (!user) {
-      return reply.code(400).send({ message: "User not found" });
-    }
-
-    reply.send({ message: "User updated successfully", user });
-  } catch (error) {
-    reply.code(500).send({ message: error.message });
-  }
+export const getUser = async (req, reply) => {
+  const userId = req.user.id;
+  const user = await User.findById(userId).select("-password");
+  if (!user) return reply.code(400).send({ message: "User not found" });
+  reply.code(200).send({ success: true, user });
 };
 
-export const deactivateAccount =async(req,reply)=>{
-    try {
-        const {uid} = req.params;
+export const updateUser = async (req, reply) => {
+  const user = await User.findById(req.user.id);
+  await user.updateIfActive(req.body);
 
-        const user = await User.findById(uid);
-        if(!user) return reply.code(400).send({message:"User not found"});
+  reply.code(200).send({ message: "User updated successfully", user });
+};
 
-        user.isActive=false;
-        user.deactivatedAt=new Date(Date.now());
-        await user.save();
+export const deactivateAccount = async (req, reply) => {
+  const uid = req.user.id;
 
-        reply.send({message:"Account deactivated successfully"});
+  const user = await User.findById(uid);
+  if (!user) return reply.code(400).send({ message: "User not found" });
 
-    } catch (error) {
-        reply.code(500).send({message:error.message})
-    }
-}
+  if (!user.isActive) {
+    return reply.code(400).send({ message: "Account already deactivated" });
+  }
 
+  user.isActive = false;
+  user.deactivatedAt = new Date(Date.now());
+  await user.save();
 
+  reply.send({ message: "Account deactivated successfully" });
+};
+
+// export const activateAccount = async (req, reply) => {
+//   const uid = req.user.id;
+
+//   const user = await User.findById(uid);
+//   if (!user) return reply.code(400).send({ message: "User not found" });
+
+//   user.isActive = true;
+//   user.deactivatedAt = null;
+//   await user.save();
+
+//   reply.send({ message: "Account activated successfully" });
+// };

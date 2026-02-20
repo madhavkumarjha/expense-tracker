@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema(
         message: "Password must contain at least one uppercase letter",
       },
     },
-    isActive: { type: Boolean, default: false },
+    isActive: { type: Boolean, default: true },
     deactivatedAt:{type:Date},
     avatar: {
       type: String,
@@ -45,6 +45,13 @@ userSchema.pre("save", async function () {
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
+
+userSchema.methods.updateIfActive = async function (data) {
+  if (!this.isActive) throw new Error("Account inactive");
+  Object.assign(this, data);
+  return this.save();
+};
+
 
 userSchema.statics.findByEmail = function (email) {
   return this.findOne({ email });

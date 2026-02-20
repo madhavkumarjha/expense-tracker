@@ -13,7 +13,7 @@ const expenseSchema = new mongoose.Schema(
     category: {
       type: String,
       enum: ["food", "transport", "shopping", "utilities", "other"],
-      default:"other",
+      default: "other",
       // required: true,
     },
     date: { type: Date, default: Date.now },
@@ -29,7 +29,12 @@ expenseSchema.pre("save", async function () {
     userId: expense.userId,
   });
 
-  if (!budget) return;
+  if (!budget) {
+    // No budget defined → block expense creation
+    throw new Error(
+      "Budget not set. Please create a budget before adding expenses.",
+    );
+  }
 
   const now = new Date();
   const startDate =
