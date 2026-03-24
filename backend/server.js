@@ -9,6 +9,7 @@ import checkBudgetJob from "./jobs/checkBudget.js";
 import Budget from "./models/budget.model.js";
 import expenseRoutes from "./routes/expense.routes.js";
 import budgetRoutes from "./routes/budget.routes.js";
+import fastifyCors from "@fastify/cors";
 
 const fastify = Fastify({ logger: true });
 
@@ -24,6 +25,10 @@ fastify.register(budgetRoutes, { prefix: "api/budgets" });
 reactiveUsersJob(agenda);
 checkBudgetJob(agenda);
 
+fastify.register(fastifyCors, {
+  origin: "http://localhost:4200", // allow Angular frontend
+  credentials: true, // allow cookies/headers if needed
+});
 
 (async function () {
   await agenda.start();
@@ -39,7 +44,6 @@ checkBudgetJob(agenda);
       await agenda.every("1 month", "budget alert", { userId: budget.userId });
     }
   }
-  
 })();
 
 fastify.setErrorHandler((error, req, reply) => {
@@ -49,19 +53,16 @@ fastify.setErrorHandler((error, req, reply) => {
     url: req.url,
     userId: req.user?.id, // if authentication added user info
     message: error.message,
-    stack: error.stack
+    stack: error.stack,
   });
 
   // Send clean response
   reply.code(500).send({
     success: false,
     message: "Internal Server Error",
-    details: error.message // optional, hide in production
+    details: error.message, // optional, hide in production
   });
 });
-
-
-
 
 fastify
   .listen({ port: config.port })
