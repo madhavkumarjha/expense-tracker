@@ -1,13 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Layout } from '../../../core/services/layout';
 import { RouterOutlet } from '@angular/router';
-import {
-  LucideChevronLeft,
-  LucideChevronRight,
-  LucideHouse,
-  LucideLayoutDashboard,
-  LucideLogOut,
-} from '@lucide/angular';
+import { LucideHouse, LucideLayoutDashboard, LucideLogOut } from '@lucide/angular';
 import { SharedModule } from '../../shared.module';
 import { AuthService } from '../../../core/auth/auth-service';
 
@@ -17,8 +11,6 @@ import { AuthService } from '../../../core/auth/auth-service';
     SharedModule,
     RouterOutlet,
     LucideLayoutDashboard,
-    LucideChevronLeft,
-    LucideChevronRight,
     LucideHouse,
     LucideLogOut,
   ],

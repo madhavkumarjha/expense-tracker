@@ -10,10 +10,10 @@ aside {
   --sidebar-danger: #f87171;
   --sidebar-danger-strong: #fecaca;
   --sidebar-danger-bg: rgba(248, 113, 113, 0.14);
-  width: 260px;
+  width: 265px;
   height: 100vh;
   background-color: var(--sidebar-bg);
-  color: white;
+  color: var(--sidebar-text);
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease;
@@ -35,7 +35,7 @@ aside.collapsed {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: bold;
   color: var(--sidebar-accent);
   margin-bottom: 2rem;
@@ -43,8 +43,24 @@ aside.collapsed {
   overflow: hidden;
 }
 
+.logo-toggle {
+  width: 100%;
+  margin-top: 0;
+  padding: 0.25rem 0.5rem;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.logo-toggle:hover {
+  background: rgba(56, 189, 248, 0.1);
+}
+
 aside.collapsed .logo {
   font-size: 1rem;
+  justify-content: center;
   text-align: center;
 }
 
@@ -82,7 +98,6 @@ nav {
   font-weight: 600;
 }
 
-/* Toggle Button at Bottom */
 button {
   background: var(--sidebar-surface);
   border: none;

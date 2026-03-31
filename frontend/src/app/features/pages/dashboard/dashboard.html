@@ -1,1 +1,36 @@
-<p>dashboard works!</p>
+<div class="p-8 bg-slate-50 min-h-screen">
+  <div class="mb-8">
+    <h1 class="md:text-2xl font-bold text-slate-800">Financial Overview</h1>
+    <p class="text-slate-500">Welcome back, Madhav! Here is your monthly summary.</p>
+  </div>
+  <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <app-dash-card label="Total Budget" [value]="totalBudget" type="budget"></app-dash-card>
+    <app-dash-card label="Total Expense" [value]="totalExpenses" type="expense"></app-dash-card>
+    <app-dash-card
+      label="Remaining Budget"
+      [value]="remainingBudget"
+      type="remaining"
+    ></app-dash-card>
+  </div>
+
+<div class="bg-white p-6 rounded-2xl shadow-sm mb-8">
+    <h3 class="font-bold text-slate-800 mb-4">Spending Trends</h3>
+    <app-dash-graph
+    [series]="chartData"
+    [categories]="chartLabels"
+    [colors]="['#6366f1']"
+    >
+
+    </app-dash-graph>
+  </div>
+  <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+    <div class="p-6 border-b border-slate-100">
+      <h3 class="font-bold text-slate-800">Recent Transactions</h3>
+    </div>
+    <div class="p-6">
+      <app-dash-table 
+      [transactions]="transactions"
+      ></app-dash-table>
+      </div>
+    </div>
+</div>

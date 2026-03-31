@@ -1,8 +1,8 @@
 <aside [class.collapsed]="!layout.isSidebarOpen()">
-  <div class="logo">
+  <button type="button" class="logo logo-toggle" (click)="toggleSidebar()" title="toggle-collaps">
     <svg lucideLayoutDashboard class="brand-icon" [size]="28"></svg>
-    <span *ngIf="layout.isSidebarOpen()" class="brand-name">ExpenseTracker</span>
-  </div>
+    <span *ngIf="layout.isSidebarOpen()" class="px-1 py-2">ExpenseTracker</span>
+  </button>
   <nav>
     <a routerLink="/expense-tracker/dashboard" routerLinkActive="active-link" class="nav-item">
       <svg lucideHouse class="nav-icon" [size]="22"></svg>
@@ -13,12 +13,6 @@
       <span class="nav-label" *ngIf="layout.isSidebarOpen()">Logout</span>
     </button>
   </nav>
-  <div class="bottom-actions">
-    <button (click)="layout.toggleSidebar()" class="toggle-btn">
-      <svg *ngIf="layout.isSidebarOpen()" lucideChevronLeft [size]="24"></svg>
-      <svg *ngIf="!layout.isSidebarOpen()" lucideChevronRight [size]="24"></svg>
-    </button>
-  </div>
 </aside>
 <main class="page-content" [class.sidebar-collapsed]="!layout.isSidebarOpen()">
   <router-outlet></router-outlet>
