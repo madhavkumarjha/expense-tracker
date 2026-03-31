@@ -1,18 +1,26 @@
 import { Routes } from '@angular/router';
-import { Login } from './pages/login/login';
-import { SideNav } from './shared/components/side-nav/side-nav';
-import { Dashboard } from './pages/dashboard/dashboard';
-import { authGuard } from './core/auth/auth-guard';
+import { authGuard, guestGuard } from './core/auth/auth-guard';
+
 
 export const routes: Routes = [
-    {path:'login',component:Login},
-    {
-        path:'expense-tracker',
-        component:SideNav,
-        canActivate:[authGuard],
-        children:[
-            {path:'dashboard',component:Dashboard},
-        ]
-
-    }
+  { path: '', pathMatch: 'full', redirectTo: 'expense-tracker/dashboard' },
+  {
+    path: 'login',
+    canActivate: [guestGuard],
+    loadComponent: () => import('./features/pages/login/login').then((m) => m.Login),
+  },
+  {
+    path: 'register',
+    canActivate: [guestGuard],
+    loadComponent: () => import('./features/pages/register/register').then((m) => m.Register),
+  },
+  {
+    path: 'expense-tracker',
+    loadComponent: () => import('./shared/components/side-nav/side-nav').then((m) => m.SideNav),
+    canActivate: [authGuard],
+    children: [
+      { path: 'dashboard', loadComponent: () => import('./features/pages/dashboard/dashboard').then((m) => m.Dashboard) },
+    ],
+  },
+  // { path: '**', redirectTo: 'login' },
 ];

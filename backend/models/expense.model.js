@@ -24,35 +24,43 @@ const expenseSchema = new mongoose.Schema(
 
 expenseSchema.pre("save", async function () {
   const expense = this;
+  const expenseDate = new Date(expense.date);
+  const month = expenseDate.getMonth();
+  const year = expenseDate.getFullYear();
 
   const budget = await Budget.findOne({
     userId: expense.userId,
+    month,
+    year,
   });
 
   if (!budget) {
     // No budget defined → block expense creation
     throw new Error(
-      "Budget not set. Please create a budget before adding expenses.",
+      `No budget set for ${expenseDate.toLocaleString("default", { month: "long" })} ${year}.`,
     );
   }
 
-  const now = new Date();
-  const startDate =
-    budget.period === "monthly"
-      ? new Date(now.getFullYear(), now.getMonth(), 1)
-      : new Date(now.setDate(now.getDate() - 7));
+  const startOfMonth = new Date(year, month, 1);
+  const endOfMonth = new Date(year, month + 1, 0, 23, 59, 59);
 
   const totalSpent = await mongoose
     .model("Expense")
     .aggregate([
-      { $match: { userId: expense.userId, date: { $gte: startDate } } },
+      {
+        $match: {
+          userId: expense.userId,
+          date: { $gte: startOfMonth, $lte: endOfMonth },
+          _id: { $ne: expense._id },
+        },
+      },
       { $group: { _id: null, total: { $sum: "$amount" } } },
     ]);
 
   const spent = totalSpent[0]?.total || 0;
 
   if (spent + expense.amount > budget.limit) {
-    throw new Error("Expense exceeds budget limit");
+    throw new Error(`Expense exceeds your ${budget.limit} limit for this month. Current total: ${spent}`);
   }
 });
 

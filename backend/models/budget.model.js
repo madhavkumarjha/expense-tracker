@@ -11,6 +11,16 @@ const budgetSchema = new Schema(
       type: Number,
       required: true,
     },
+    month: { 
+      type: Number, 
+      required: true, 
+      default: () => new Date().getMonth() 
+    },
+    year: { 
+      type: Number, 
+      required: true, 
+      default: () => new Date().getFullYear() 
+    },
     period: {
       type: String,
       enum: ["monthly", "weekly"],

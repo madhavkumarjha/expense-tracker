@@ -11,6 +11,23 @@ export const getAllExpenses = async (req, reply) => {
   reply.code(200).send({ success: true, expenses: expenses });
 };
 
+export const getMonthlyExpenses = async (req, reply) => {
+  const userId = req.user.id;
+  const now = new Date();
+  const month = parseInt(req.query.month) || now.getMonth();
+  const year = parseInt(req.query.year) || now.getFullYear();
+
+  const startOfMonth = new Date(year, month, 1);
+  const endOfMonth = new Date(year, month + 1, 0);
+
+  const expenses = await Expense.find({
+    userId,
+    date: { $gte: startOfMonth, $lte: endOfMonth }
+  }).sort({ date: -1 });
+
+  reply.code(200).send({ success: true, month, year, expenses });
+};
+
 export const getExpense = async (req, reply) => {
   const { eid } = req.params;
   const expense = await Expense.findById(eid);
@@ -38,11 +55,16 @@ export const updateExpense = async (req, reply) => {
   const { id } = req.params;
   const data = req.body;
 
-  const expense = await Expense.findByIdAndUpdate(id, data, { new: true });
+  const expense = await Expense.findById(id);
+  if (!expense) return reply.code(404).send({ message: "Expense not found" });
 
-  if (!expense) return reply.code(400).send({ message: "Expense not found" });
+  // Update fields
+  Object.assign(expense, data);
+  
+  // This triggers the .pre("save") hook and checks the budget!
+  await expense.save(); 
 
-  reply.code(200).send({ message: "Expense updated successfully" });
+  reply.code(200).send({ message: "Expense updated and budget verified!" });
 };
 
 export const deleteExpense = async (req, reply) => {

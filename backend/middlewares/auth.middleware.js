@@ -11,6 +11,7 @@ export const authentication = async (req, reply) => {
   try {
     const decoded = jwt.verify(token, config.jwtSecret);
     req.user = decoded; // attach user info
+    console.log("Middleware Attached User:", req.user);
   } catch (error) {
     return reply.code(403).send({ message: "Invalid or expired token" });
   }

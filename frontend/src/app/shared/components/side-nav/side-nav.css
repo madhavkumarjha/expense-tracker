@@ -1,0 +1,163 @@
+/* Sidebar Container */
+aside {
+  --sidebar-bg: #1e293b;
+  --sidebar-surface: #334155;
+  --sidebar-surface-hover: #475569;
+  --sidebar-text: #cbd5e1;
+  --sidebar-text-strong: #f8fafc;
+  --sidebar-accent: #38bdf8;
+  --sidebar-active-text: #0f172a;
+  --sidebar-danger: #f87171;
+  --sidebar-danger-strong: #fecaca;
+  --sidebar-danger-bg: rgba(248, 113, 113, 0.14);
+  width: 260px;
+  height: 100vh;
+  background-color: var(--sidebar-bg);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 1.5rem;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Collapsed State */
+aside.collapsed {
+  width: 80px;
+  padding: 1.5rem 0.5rem;
+}
+
+/* Logo Section */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--sidebar-accent);
+  margin-bottom: 2rem;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+aside.collapsed .logo {
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* Navigation Links */
+nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-grow: 1;
+}
+
+.nav-item {
+  color: var(--sidebar-text);
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-item:hover {
+  background-color: var(--sidebar-surface);
+  color: var(--sidebar-text-strong);
+}
+
+/* Active Route Styling */
+.active-link {
+  background-color: var(--sidebar-accent) !important;
+  color: var(--sidebar-active-text) !important;
+  font-weight: 600;
+}
+
+/* Toggle Button at Bottom */
+button {
+  background: var(--sidebar-surface);
+  border: none;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: auto;
+}
+
+button:hover {
+  background: var(--sidebar-surface-hover);
+}
+
+.nav-button {
+  width: 100%;
+  margin-top: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.nav-button:hover {
+  background-color: var(--sidebar-surface);
+}
+
+.logout-button {
+  color: var(--sidebar-danger);
+}
+
+.logout-button:hover {
+  background-color: var(--sidebar-danger-bg);
+  color: var(--sidebar-danger-strong);
+}
+
+.brand-icon,
+.nav-icon {
+  flex-shrink: 0;
+  stroke-width: 2.2px;
+}
+
+.brand-icon {
+  color: var(--sidebar-accent);
+  width: 28px;
+  height: 28px;
+}
+
+.nav-icon {
+  color: currentColor;
+  opacity: 0.95;
+}
+
+.nav-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* When collapsed, center the icons */
+aside.collapsed .nav-item {
+  justify-content: center;
+  padding: 0.75rem 0;
+}
+
+aside.collapsed .nav-button {
+  padding: 0.75rem 0;
+}
+
+.page-content {
+  margin-left: 260px;
+  min-height: 100vh;
+  padding: 1.5rem;
+  transition: margin-left 0.3s ease;
+}
+
+.page-content.sidebar-collapsed {
+  margin-left: 80px;
+}
