@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../../../core/auth/auth-service';
-import { DashCard } from '../../../shared/components/dash-card/dash-card';
-import { DashGraph } from '../../../shared/components/dash-graph/dash-graph';
-import { DashTable } from '../../../shared/components/dash-table/dash-table';
+import { DashCard } from './components/dash-card/dash-card';
+import { DashGraph } from './components/dash-graph/dash-graph';
+import { DashTable } from './components/dash-table/dash-table';
 
 @Component({
   selector: 'app-dashboard',

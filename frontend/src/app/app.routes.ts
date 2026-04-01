@@ -20,6 +20,8 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: 'dashboard', loadComponent: () => import('./features/pages/dashboard/dashboard').then((m) => m.Dashboard) },
+      { path: 'budget', loadComponent: () => import('./features/pages/budget/budget').then((m) => m.Budget) },
+      {path: 'expenses', loadComponent: () => import('./features/pages/expenses/expenses').then((m) => m.Expenses) }, 
     ],
   },
   // { path: '**', redirectTo: 'login' },

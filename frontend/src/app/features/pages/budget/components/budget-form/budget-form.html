@@ -1,0 +1,98 @@
+<div class="rounded-3xl bg-white p-6 shadow-2xl ring-1 ring-slate-200">
+  <div class="flex items-start justify-between gap-4">
+    <div>
+      <p class="text-sm font-medium uppercase tracking-[0.2em] text-slate-400">
+        {{ mode === 'create' ? 'New Budget' : 'Edit Budget' }}
+      </p>
+      <h3 class="mt-2 text-2xl font-bold text-slate-900">
+        {{ mode === 'create' ? 'Add a fresh budget' : 'Update budget details' }}
+      </h3>
+    </div>
+
+    <button
+      type="button"
+      (click)="cancel.emit()"
+      class="rounded-full border border-slate-200 px-3 py-1 text-sm font-medium text-slate-500 transition hover:bg-slate-50"
+    >
+      Close
+    </button>
+  </div>
+
+  <div class="mt-6 grid gap-4 md:grid-cols-2">
+    <div class="md:col-span-2">
+      <label class="mb-2 block text-sm font-medium text-slate-600">Budget Limit (₹)</label>
+      <input
+        type="number"
+        [(ngModel)]="form.limit"
+        class="w-full rounded-2xl border border-slate-200 px-4 py-3 text-slate-800 outline-none transition focus:border-slate-400"
+        placeholder="e.g. 30000"
+      />
+    </div>
+
+    <div>
+      <label class="mb-2 block text-sm font-medium text-slate-600">Month</label>
+      <select
+        [(ngModel)]="form.month"
+        class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-800 outline-none transition focus:border-slate-400"
+      >
+        @for (month of monthOptions; track month.value) {
+          <option [ngValue]="month.value">{{ month.label }}</option>
+        }
+      </select>
+    </div>
+
+    <div>
+      <label class="mb-2 block text-sm font-medium text-slate-600">Year</label>
+      <input
+        type="number"
+        [(ngModel)]="form.year"
+        class="w-full rounded-2xl border border-slate-200 px-4 py-3 text-slate-800 outline-none transition focus:border-slate-400"
+      />
+    </div>
+
+    <div>
+      <label class="mb-2 block text-sm font-medium text-slate-600">Budget Period</label>
+      <select
+        [(ngModel)]="form.period"
+        class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-800 outline-none transition focus:border-slate-400"
+      >
+        <option value="monthly">Monthly</option>
+        <option value="weekly">Weekly</option>
+      </select>
+    </div>
+
+    <div class="md:col-span-2">
+      <label class="mb-2 block text-sm font-medium text-slate-600">Alert Frequency</label>
+      <div class="flex flex-wrap gap-3">
+        @for (option of alertOptions; track option) {
+          <button
+            type="button"
+            (click)="setAlertFrequency(option)"
+            [class]="form.alertFrequency === option ? 'bg-slate-900 text-white ring-slate-900' : 'bg-slate-100 text-slate-600 ring-slate-200'"
+            class="rounded-2xl px-4 py-2 text-sm font-semibold capitalize ring-1 transition"
+          >
+            {{ option }}
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-8 flex gap-3">
+    <button
+      type="button"
+      (click)="cancel.emit()"
+      class="flex-1 rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
+    >
+      Cancel
+    </button>
+    <button
+      type="button"
+      (click)="submit()"
+      [disabled]="isInvalid()"
+      class="flex-1 rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-300"
+    >
+      {{ mode === 'create' ? 'Save Budget' : 'Update Budget' }}
+    </button>
+  </div>
+</div>

@@ -8,6 +8,14 @@
       <svg lucideHouse class="nav-icon" [size]="22"></svg>
       <span *ngIf="layout.isSidebarOpen()" class="nav-label">Dashboard</span>
     </a>
+    <a routerLink="/expense-tracker/budget" routerLinkActive="active-link" class="nav-item">
+      <svg lucideWallet class="nav-icon" [size]="22"></svg>
+      <span *ngIf="layout.isSidebarOpen()" class="nav-label">Budget</span>
+    </a>
+    <a routerLink="/expense-tracker/expenses" routerLinkActive="active-link" class="nav-item">
+      <svg lucideReceipt class="nav-icon" [size]="22"></svg>
+      <span *ngIf="layout.isSidebarOpen()" class="nav-label">Expenses</span>
+    </a>
     <button type="button" class="nav-item nav-button logout-button" (click)="logout()">
       <svg lucideLogOut class="nav-icon" [size]="22"></svg>
       <span class="nav-label" *ngIf="layout.isSidebarOpen()">Logout</span>

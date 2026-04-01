@@ -13,14 +13,9 @@
     ></app-dash-card>
   </div>
 
-<div class="bg-white p-6 rounded-2xl shadow-sm mb-8">
+  <div class="bg-white p-6 rounded-2xl shadow-sm mb-8">
     <h3 class="font-bold text-slate-800 mb-4">Spending Trends</h3>
-    <app-dash-graph
-    [series]="chartData"
-    [categories]="chartLabels"
-    [colors]="['#6366f1']"
-    >
-
+    <app-dash-graph [series]="chartData" [categories]="chartLabels" [colors]="['#6366f1']">
     </app-dash-graph>
   </div>
   <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
@@ -28,9 +23,7 @@
       <h3 class="font-bold text-slate-800">Recent Transactions</h3>
     </div>
     <div class="p-6">
-      <app-dash-table 
-      [transactions]="transactions"
-      ></app-dash-table>
-      </div>
+      <app-dash-table [transactions]="transactions"></app-dash-table>
     </div>
+  </div>
 </div>

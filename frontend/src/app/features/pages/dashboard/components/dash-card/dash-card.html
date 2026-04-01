@@ -1,0 +1,28 @@
+<div
+  [class]="
+    'p-6 rounded-2xl shadow-sm border-l-4 transition-all hover:scale-105 bg-white ' +
+    config[type].border
+  "
+>
+  <div class="flex justify-between items-center">
+     <div
+      [class]="
+        'p-3 rounded-full text-white ' + config[type].bg
+      "
+    >
+      @if (type === 'budget') {
+        <svg lucideWallet class="nav-icon" [size]="30"></svg>
+      } @else if (type === 'expense') {
+        <svg lucideReceipt class="nav-icon" [size]="30"></svg>
+      } @else {
+        <svg lucideUserRoundPen class="nav-icon" [size]="30"></svg>
+      }
+    </div>
+    <div>
+      <p class="text-slate-500 text-sm font-medium uppercase">{{ label }}</p>
+      <h2 class="text-2xl font-bold mt-1 text-slate-800">₹{{ value | number }}</h2>
+    </div>
+
+   
+  </div>
+</div>

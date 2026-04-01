@@ -16,6 +16,13 @@ const fastify = Fastify({ logger: true });
 // Connect to MongoDB
 connectDB();
 
+fastify.register(fastifyCors, {
+  origin: "http://localhost:4200",
+  credentials: true,
+  methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+});
+
 fastify.register(authRoutes, { prefix: "api/auth" });
 fastify.register(userRoutes, { prefix: "api/users" });
 fastify.register(expenseRoutes, { prefix: "api/expenses" });
@@ -24,11 +31,6 @@ fastify.register(budgetRoutes, { prefix: "api/budgets" });
 // register jobs
 reactiveUsersJob(agenda);
 checkBudgetJob(agenda);
-
-fastify.register(fastifyCors, {
-  origin: "http://localhost:4200", // allow Angular frontend
-  credentials: true, // allow cookies/headers if needed
-});
 
 (async function () {
   await agenda.start();
