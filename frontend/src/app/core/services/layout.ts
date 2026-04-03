@@ -1,4 +1,4 @@
-import { Injectable, signal, computed, HostListener } from '@angular/core';
+import { Injectable, signal, computed } from '@angular/core';
 
 // ng generate service core/services/layout to create layout service for managing layout state and behavior
 
@@ -6,7 +6,7 @@ import { Injectable, signal, computed, HostListener } from '@angular/core';
   providedIn: 'root',
 })
 export class Layout {
-  private _isSidebarExpanded = signal(true);
+  private _isSidebarExpanded = signal(window.innerWidth >= 768);
 
   private _screenWidth = signal(window.innerWidth);
 

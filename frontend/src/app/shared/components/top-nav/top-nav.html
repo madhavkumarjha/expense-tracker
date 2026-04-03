@@ -1,0 +1,26 @@
+<header class="top-nav">
+  <div class="top-nav__left">
+    @if (layout.isMobileView()) {
+      <button type="button" class="top-nav__menu" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+        <svg lucideMenu [size]="20"></svg>
+      </button>
+    }
+
+    <div>
+      <p class="top-nav__eyebrow">Workspace</p>
+      <h1 class="top-nav__title">Expense Tracker</h1>
+    </div>
+  </div>
+
+  <div class="top-nav__profile">
+    <div class="top-nav__avatar">{{ initials() }}</div>
+    <div class="top-nav__meta">
+      <p class="top-nav__name">{{ user()?.name || 'User' }}</p>
+      <p class="top-nav__email">{{ user()?.email || 'Signed in' }}</p>
+    </div>
+
+    <button type="button" class="top-nav__logout" (click)="logout()" aria-label="Logout">
+      <svg lucideLogOut [size]="18"></svg>
+    </button>
+  </div>
+</header>

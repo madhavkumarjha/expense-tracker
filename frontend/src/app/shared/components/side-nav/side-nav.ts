@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { Layout } from '../../../core/services/layout';
 import { RouterOutlet } from '@angular/router';
-import { LucideHouse, LucideLayoutDashboard, LucideLogOut, LucideWallet, LucideReceipt } from '@lucide/angular';
+import { LucideHouse, LucideWallet, LucideReceipt } from '@lucide/angular';
 import { SharedModule } from '../../shared.module';
 import { AuthService } from '../../../core/auth/auth-service';
+import { TopNav } from '../top-nav/top-nav';
 
 @Component({
   selector: 'app-side-nav',
@@ -11,9 +12,8 @@ import { AuthService } from '../../../core/auth/auth-service';
   imports: [
     SharedModule,
     RouterOutlet,
-    LucideLayoutDashboard,
+    TopNav,
     LucideHouse,
-    LucideLogOut,
     LucideWallet,
     LucideReceipt
 ],
@@ -24,11 +24,18 @@ export class SideNav {
   layout = inject(Layout);
   private authService = inject(AuthService);
 
-  toggleSidebar() {
-    this.layout.toggleSidebar();
+  ngOnInit() {
+    this.layout.updateScreenWidth(window.innerWidth);
+
+    if (!this.authService.currentUser()) {
+      this.authService.getMe().subscribe({
+        error: () => undefined,
+      });
+    }
   }
 
-  logout() {
-    this.authService.logout();
+  @HostListener('window:resize')
+  onResize() {
+    this.layout.updateScreenWidth(window.innerWidth);
   }
 }

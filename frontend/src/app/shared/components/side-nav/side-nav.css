@@ -22,6 +22,7 @@ aside {
   top: 0;
   padding: 1.5rem;
   box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 30;
 }
 
 /* Collapsed State */
@@ -41,21 +42,6 @@ aside.collapsed {
   margin-bottom: 2rem;
   white-space: nowrap;
   overflow: hidden;
-}
-
-.logo-toggle {
-  width: 100%;
-  margin-top: 0;
-  padding: 0.25rem 0.5rem;
-  background: transparent;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  text-align: left;
-}
-
-.logo-toggle:hover {
-  background: rgba(56, 189, 248, 0.1);
 }
 
 aside.collapsed .logo {
@@ -175,4 +161,35 @@ aside.collapsed .nav-button {
 
 .page-content.sidebar-collapsed {
   margin-left: 80px;
+}
+
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(2px);
+  z-index: 20;
+}
+
+@media (max-width: 767px) {
+  aside {
+    transform: translateX(-100%);
+    width: 265px;
+    padding: 1.5rem;
+  }
+
+  aside.collapsed {
+    width: 265px;
+    padding: 1.5rem;
+  }
+
+  aside.mobile-open {
+    transform: translateX(0);
+  }
+
+  .page-content,
+  .page-content.sidebar-collapsed {
+    margin-left: 0;
+    padding: 1rem;
+  }
 }

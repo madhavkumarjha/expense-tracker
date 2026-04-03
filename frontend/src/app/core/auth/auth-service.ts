@@ -12,8 +12,7 @@ import { environment } from '../../../environments/environment';
 export class AuthService {
   private http=inject(HttpClient);
   private router =inject(Router);
-  private readonly apiUrl = `${environment.apiUrl}/auth/`;
-
+  private readonly apiUrl = `${environment?.apiUrl}/auth/`;
   currentUser = signal<User | null>(null);
   isAuthenticated = signal<boolean>(false);
 

@@ -1,8 +1,11 @@
-<aside [class.collapsed]="!layout.isSidebarOpen()">
-  <button type="button" class="logo logo-toggle" (click)="toggleSidebar()" title="toggle-collaps">
+@if (layout.isMobileView() && layout.isSidebarOpen()) {
+  <div class="sidebar-backdrop" (click)="layout.closeSidebar()"></div>
+}
+
+<aside [class.collapsed]="!layout.isSidebarOpen()" [class.mobile-open]="layout.isMobileView() && layout.isSidebarOpen()">
+  <!-- <div class="logo" aria-label="Expense Tracker navigation">
     <svg lucideLayoutDashboard class="brand-icon" [size]="28"></svg>
-    <span *ngIf="layout.isSidebarOpen()" class="px-1 py-2">ExpenseTracker</span>
-  </button>
+  </div> -->
   <nav>
     <a routerLink="/expense-tracker/dashboard" routerLinkActive="active-link" class="nav-item">
       <svg lucideHouse class="nav-icon" [size]="22"></svg>
@@ -16,12 +19,9 @@
       <svg lucideReceipt class="nav-icon" [size]="22"></svg>
       <span *ngIf="layout.isSidebarOpen()" class="nav-label">Expenses</span>
     </a>
-    <button type="button" class="nav-item nav-button logout-button" (click)="logout()">
-      <svg lucideLogOut class="nav-icon" [size]="22"></svg>
-      <span class="nav-label" *ngIf="layout.isSidebarOpen()">Logout</span>
-    </button>
   </nav>
 </aside>
 <main class="page-content" [class.sidebar-collapsed]="!layout.isSidebarOpen()">
+  <app-top-nav />
   <router-outlet></router-outlet>
 </main>
