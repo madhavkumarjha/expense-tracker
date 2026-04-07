@@ -74,15 +74,13 @@ export const register = async (req, reply) => {
   });
 
   user.refreshToken = refreshToken;
-  await User.save();
+  await user.save();
 
-  reply.code(200).send({
+  reply.code(201).send({
     message: "User registered successfully",
     accessToken,
     refreshToken,
   });
-
-  reply.code(201).send({ message: "User registered successfully" });
 };
 
 export const refreshToken = async (req, reply) => {

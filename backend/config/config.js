@@ -6,7 +6,7 @@ dotenv.config({
 })
 export default {
   mongoURI: process.env.MONGO_URI,
-  jwtSecret: process.env.JWT_SECRET,
+  jwtSecret: process.env.SECRET_KEY,
   refreshSecret:process.env.REFRESH_SECRET,
   imagekitEndpoint:process.env.IMAGEKIT_URL_ENDPOINT,
   imagekitPublicKey:process.env.IMAGEKIT_PUBLIC_KEY,

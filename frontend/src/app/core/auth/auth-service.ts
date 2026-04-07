@@ -12,12 +12,20 @@ import { environment } from '../../../environments/environment';
 export class AuthService {
   private http=inject(HttpClient);
   private router =inject(Router);
-  private readonly apiUrl = `${environment?.apiUrl}/auth/`;
+  private readonly apiUrl = `${environment?.apiUrl}/auth`;
   currentUser = signal<User | null>(null);
   isAuthenticated = signal<boolean>(false);
 
+  register(userData: any) {
+    return this.http.post<any>(`${this.apiUrl}/register`, userData).pipe(
+      tap(res => {
+        this.setSession(res.accessToken, res.refreshToken);
+      })
+    );
+  }
+
   login(credentials:any){
-    return this.http.post<any>(`${this.apiUrl}login`, credentials).pipe(
+    return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
       tap(res=>{
         this.setSession(res.accessToken, res.refreshToken);
       })
@@ -32,7 +40,7 @@ export class AuthService {
     }
 
     return this.http
-      .post<{ accessToken: string }>(`${this.apiUrl}refresh`, { refreshToken })
+      .post<{ accessToken: string }>(`${this.apiUrl}/refresh`, { refreshToken })
       .pipe(
         tap((res) => {
           localStorage.setItem('accessToken', res.accessToken);
@@ -42,7 +50,7 @@ export class AuthService {
   }
   
   getMe(){
-    return this.http.get<User>(`${this.apiUrl}me`).pipe(
+    return this.http.get<User>(`${this.apiUrl}/me`).pipe(
       tap(user=>{
         this.currentUser.set(user);
         this.isAuthenticated.set(true);
