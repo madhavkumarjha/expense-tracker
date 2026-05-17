@@ -1,11 +1,13 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
-import { BudgetService, Budget as BudgetModel } from '../../../core/services/budget-service';
+import { BudgetService } from '../../../core/services/budget-service';
+import { Budget as BudgetModel } from '../../../core/models/budget.model';
 import { toast } from 'ngx-sonner';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BudgetFormComponent } from './components/budget-form/budget-form';
 import { BudgetTableComponent } from './components/budget-table/budget-table';
 import { DeleteModal } from '../../../shared/components/delete-modal/delete-modal';
+
 
 @Component({
   selector: 'app-budget',

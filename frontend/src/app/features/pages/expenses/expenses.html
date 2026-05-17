@@ -10,13 +10,14 @@
 
     <button
       type="button"
-    
+      (click)="openForm()"
       class="rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-700"
     >
       Add Expense
     </button>
   </div>
 
+  <app-expense-form *ngIf="showForm" (close)="closeForm()"></app-expense-form>
 
 </section>
 

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SharedModule } from '../../../../../shared/shared.module';
-import { Budget as BudgetModel } from '../../../../../core/services/budget-service';
+import { Budget as BudgetModel } from '../../../../../core/models/budget.model';
 
 @Component({
   selector: 'app-budget-table',

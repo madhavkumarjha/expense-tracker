@@ -64,6 +64,8 @@ expenseSchema.pre("save", async function () {
   }
 });
 
+expenseSchema.index({ userId: 1, date: 1 });
+
 const Expense = mongoose.model("Expense", expenseSchema);
 
 export default Expense;

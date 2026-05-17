@@ -5,7 +5,7 @@ async function budgetRoutes(fastify) {
   fastify.addHook("preHandler", authentication);
   fastify.get("/all", getBudgets);
   fastify.post("/", saveBudget);
-  fastify.get("/get", getBudget);
+  fastify.get("/", getBudget);
   fastify.patch("/:eid", updateBudget);
   fastify.delete("/:eid", deleteBudget);
 }

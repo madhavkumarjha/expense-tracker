@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../../shared/shared.module';
-import { Budget as BudgetModel } from '../../../../../core/services/budget-service';
+import { Budget as BudgetModel } from '../../../../../core/models/budget.model';
 
 @Component({
   selector: 'app-budget-form',

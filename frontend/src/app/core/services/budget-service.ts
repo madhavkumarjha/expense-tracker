@@ -2,15 +2,8 @@ import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { Budget } from '../models/budget.model';
 
-export interface Budget {
-  _id?: string;
-  limit: number;
-  month: number;
-  year: number;
-  period: 'monthly' | 'weekly';
-  alertFrequency: 'daily' | 'weekly' | 'monthly';
-}
 
 @Injectable({
   providedIn: 'root',

@@ -21,7 +21,7 @@ export const login = async (req, reply) => {
   if (!isMatch) return reply.code(400).send({ message: "Invalid password" });
 
   const accessToken = jwt.sign({ id: user._id }, config.jwtSecret, {
-    expiresIn: "30m",
+    expiresIn: "2h",
   });
   const refreshToken = jwt.sign({ id: user._id }, config.refreshSecret, {
     expiresIn: "7d",
@@ -67,7 +67,7 @@ export const register = async (req, reply) => {
   });
 
   const accessToken = jwt.sign({ id: user._id }, config.jwtSecret, {
-    expiresIn: "30m",
+    expiresIn: "2h",
   });
   const refreshToken = jwt.sign({ id: user._id }, config.refreshSecret, {
     expiresIn: "7d",

@@ -35,5 +35,7 @@ const budgetSchema = new Schema(
   { timestamps: true },
 );
 
+budgetSchema.index({ userId: 1, month: 1, year: 1 });
+
 const Budget = model("Budget", budgetSchema);
 export default Budget;
