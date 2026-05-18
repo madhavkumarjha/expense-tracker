@@ -1,7 +1,9 @@
 <div class="p-8 bg-slate-50 min-h-screen">
   <div class="mb-8">
     <h1 class="md:text-2xl font-bold text-slate-800">Financial Overview</h1>
-    <p class="text-slate-500">Welcome back, Madhav! Here is your monthly summary.</p>
+    <p class="text-slate-500">
+      Welcome back, Madhav! Here is your {{ monthLabel || 'current month' }} summary.
+    </p>
   </div>
   <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
     <app-dash-card label="Total Budget" [value]="totalBudget" type="budget"></app-dash-card>

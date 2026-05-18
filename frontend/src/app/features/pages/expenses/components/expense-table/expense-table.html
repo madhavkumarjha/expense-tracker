@@ -1,1 +1,52 @@
-<p>expense-table works!</p>
+@if (expenses.length === 0) {
+  <div class="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-6 py-14 text-center">
+    <p class="text-lg font-semibold text-slate-700">No expenses yet</p>
+    <p class="mt-2 text-sm text-slate-500">Create your first expense to start tracking spending.</p>
+  </div>
+} @else {
+  <div class="overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-200 px-2 py-4">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-slate-200">
+        <thead class="bg-slate-50">
+          <tr class="text-left text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+            <th class="px-5 py-4">Title</th>
+            <th class="px-5 py-4">Amount</th>
+            <th class="px-5 py-4">Category</th>
+            <th class="px-5 py-4">Date</th>
+            <th class="px-5 py-4">Notes</th>
+            <th class="px-5 py-4 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 bg-white">
+          @for (expense of expenses; track expense._id ?? $index) {
+            <tr class="text-sm text-slate-700">
+              <td class="px-5 py-4 font-semibold text-slate-900">{{ expense.title }}</td>
+              <td class="px-5 py-4">₹{{ expense.amount | number:'1.0-2' }}</td>
+              <td class="px-5 py-4 capitalize">{{ expense.category }}</td>
+              <td class="px-5 py-4">{{ formatDate(expense.date) }}</td>
+              <td class="px-5 py-4 text-slate-500">{{ expense.notes || '—' }}</td>
+              <td class="px-5 py-4">
+                <div class="flex justify-end gap-2">
+                  <button
+                    type="button"
+                    (click)="editExpense.emit(expense)"
+                    class="rounded-xl border border-slate-200 px-3 py-2 font-semibold text-slate-600 transition hover:bg-slate-50"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    (click)="deleteExpense.emit(expense)"
+                    class="rounded-xl bg-rose-50 px-3 py-2 font-semibold text-rose-600 transition hover:bg-rose-100"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}

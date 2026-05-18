@@ -25,12 +25,12 @@ export const getAllExpenses = async (req, reply) => {
 export const getMonthlyExpenses = async (req, reply) => {
   const userId = req.user.id;
   const now = new Date();
-  const month =
-    req.query.month !== undefined ? Number(req.query.month) : now.getMonth();
+  const monthInput = req.query.month !== undefined ? Number(req.query.month) : undefined;
+  const month = monthInput !== undefined ? monthInput - 1 : now.getMonth();
   const year =
     req.query.year !== undefined ? Number(req.query.year) : now.getFullYear();
 
-  if (Number.isNaN(month) || Number.isNaN(year)) {
+  if (Number.isNaN(month) || Number.isNaN(year) || month < 0 || month > 11) {
     return reply.code(400).send({ message: "Invalid month or year" });
   }
 

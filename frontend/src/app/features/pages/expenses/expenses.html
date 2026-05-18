@@ -10,14 +10,57 @@
 
     <button
       type="button"
-      (click)="openForm()"
+      (click)="openCreateModal()"
       class="rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-700"
     >
       Add Expense
     </button>
   </div>
 
-  <app-expense-form *ngIf="showForm" (close)="closeForm()"></app-expense-form>
+   <div class="rounded-3xl bg-white shadow-sm ring-1 ring-slate-200">
+    @if (expenses === null) {
+      <div class="py-12 text-center">
+        <p class="text-sm font-medium text-slate-500">Loading expenses...</p>
+      </div>
+    } @else {
+      <app-expense-table
+        [expenses]="expenses"
+        (editExpense)="openEditModal($event)"
+        (deleteExpense)="openDeleteModal($event)"
+      />
+
+      @if (isRefreshing) {
+        <div class="mt-4 text-right text-xs font-medium uppercase tracking-[0.18em] text-slate-400">
+          Refreshing expenses...
+        </div>
+      }
+    }
+  </div>
 
 </section>
 
+@if (isFormModalOpen && selectedExpense) {
+  <div class="expense-modal-backdrop fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4 backdrop-blur-sm">
+    <div class="expense-modal-panel w-full max-w-2xl">
+      <app-expense-form
+        [mode]="formMode"
+        [expense]="selectedExpense"
+        (cancel)="closeFormModal()"
+        (save)="saveExpense($event)"
+      />
+    </div>
+  </div>
+}
+
+@if (isDeleteModalOpen && deletingExpense) {
+  <div class="expense-modal-backdrop fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4 backdrop-blur-sm">
+    <app-delete-modal
+      title="Remove this expense?"
+      [description]="'This will permanently delete the expense: ' + deletingExpense.title"
+      confirmLabel="Delete"
+      cancelLabel="Cancel"
+      (cancel)="closeDeleteModal()"
+      (confirm)="deleteExpense()"
+    />
+  </div>
+}

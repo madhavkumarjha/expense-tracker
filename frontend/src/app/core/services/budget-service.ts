@@ -19,8 +19,21 @@ export class BudgetService {
     return this.http.get<any>(`${this.apiUrl}/all`);
   }
 
-  getBudget(month: number, year: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/get?month=${month}&year=${year}`).pipe(
+  getBudget(month?: number, year?: number): Observable<any> {
+    let url = `${this.apiUrl}`;
+    const query: string[] = [];
+
+    if (month !== undefined) {
+      query.push(`month=${month}`);
+    }
+    if (year !== undefined) {
+      query.push(`year=${year}`);
+    }
+    if (query.length > 0) {
+      url += `?${query.join('&')}`;
+    }
+
+    return this.http.get<any>(url).pipe(
       tap((res) => {
         if (res.success) this.currentBudget.set(res.budget);
       }),
