@@ -30,17 +30,17 @@ export class Dashboard implements OnInit, OnDestroy { // Shifted from AfterViewI
   transactions: Array<{ title: string; category: string; amount: number; date: string }> = [];
 
   ngOnInit() {
-    // Pehli baar dashboard load hote hi data lekar aao
+    // first time loading more using ngOnInit, for router events subscribe and dashboard data refresh, we will use router events in ngOnInit itself. so ngAfterViewInit  no use here, we can remove it.
     this.loadDashboard();
 
-    // Jab user kisi aur tab (like Expenses/Budget) se wapas Dashboard pe click kare tab reload ho
+    // when user navigates back to dashboard, we want to refresh the data. So we will subscribe to router events and check if the url is dashboard, then we will refresh the data. This will ensure that whenever user comes back to dashboard, they see the latest data without needing to manually refresh.
     this.router.events
       .pipe(
         filter((event): event is NavigationEnd => event instanceof NavigationEnd),
         takeUntil(this.destroy$)
       )
       .subscribe((event) => {
-        // Sirf exact dashboard URL par hi trigger hoga, infinite loop nahi banega
+        // Only refresh if we are navigating to the dashboard route
         if (event.urlAfterRedirects.endsWith('/dashboard')) {
           this.loadDashboard();
         }
@@ -93,7 +93,7 @@ export class Dashboard implements OnInit, OnDestroy { // Shifted from AfterViewI
 
   private updateRemainingBudget() {
     this.remainingBudget = Math.max(0, this.totalBudget - this.totalExpenses);
-    // 💡 Yeh Angular ko force karega ki dynamic values ko UI me refresh kare aur hide na hone de
+    // 💡 It is mainly forcefully to change data on refresh
     this.cdr.detectChanges(); 
   }
 
