@@ -1,6 +1,6 @@
-import { Component, inject, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core'; // Added OnInit and ChangeDetectorRef
 import { Router, NavigationEnd } from '@angular/router';
-import { delay, filter, Subject, takeUntil } from 'rxjs';
+import { filter, Subject, takeUntil } from 'rxjs';
 import { BudgetService } from '../../../core/services/budget-service';
 import { ExpenseService } from '../../../core/services/expense-service';
 import { DashCard } from './components/dash-card/dash-card';
@@ -14,8 +14,9 @@ import { DashTable } from './components/dash-table/dash-table';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
-export class Dashboard implements AfterViewInit, OnDestroy {
+export class Dashboard implements OnInit, OnDestroy { // Shifted from AfterViewInit to OnInit
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef); // Injected ChangeDetectorRef
   private destroy$ = new Subject<void>();
   private budgetService = inject(BudgetService);
   private expenseService = inject(ExpenseService);
@@ -29,18 +30,21 @@ export class Dashboard implements AfterViewInit, OnDestroy {
   transactions: Array<{ title: string; category: string; amount: number; date: string }> = [];
 
   ngOnInit() {
+    // Pehli baar dashboard load hote hi data lekar aao
     this.loadDashboard();
-  }
 
-  ngAfterViewInit() {
+    // Jab user kisi aur tab (like Expenses/Budget) se wapas Dashboard pe click kare tab reload ho
     this.router.events
       .pipe(
         filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-        filter((event) => event.urlAfterRedirects.includes('/dashboard')),
-        delay(0),
-        takeUntil(this.destroy$),
+        takeUntil(this.destroy$)
       )
-      .subscribe(() => this.loadDashboard());
+      .subscribe((event) => {
+        // Sirf exact dashboard URL par hi trigger hoga, infinite loop nahi banega
+        if (event.urlAfterRedirects.endsWith('/dashboard')) {
+          this.loadDashboard();
+        }
+      });
   }
 
   ngOnDestroy() {
@@ -54,7 +58,8 @@ export class Dashboard implements AfterViewInit, OnDestroy {
     const year = now.getFullYear();
     this.monthLabel = now.toLocaleString('default', { month: 'long', year: 'numeric' });
 
-    this.budgetService.getBudget().subscribe({
+    // 1. Get Budget Data
+    this.budgetService.getBudget().pipe(takeUntil(this.destroy$)).subscribe({
       next: (res) => {
         this.totalBudget = res.budget?.limit ?? 0;
         this.updateRemainingBudget();
@@ -65,7 +70,8 @@ export class Dashboard implements AfterViewInit, OnDestroy {
       },
     });
 
-    this.expenseService.getMonthlyExpenses(month, year).subscribe({
+    // 2. Get Expenses Data
+    this.expenseService.getMonthlyExpenses(month, year).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res) => {
         const expenses = res.expenses ?? [];
         this.totalExpenses = expenses.reduce((sum, expense) => sum + Number(expense.amount ?? 0), 0);
@@ -87,6 +93,8 @@ export class Dashboard implements AfterViewInit, OnDestroy {
 
   private updateRemainingBudget() {
     this.remainingBudget = Math.max(0, this.totalBudget - this.totalExpenses);
+    // 💡 Yeh Angular ko force karega ki dynamic values ko UI me refresh kare aur hide na hone de
+    this.cdr.detectChanges(); 
   }
 
   private buildRecentTransactions(expenses: any[]) {
@@ -105,8 +113,10 @@ export class Dashboard implements AfterViewInit, OnDestroy {
     const totals = new Map<string, number>();
 
     expenses.forEach((expense) => {
-      const date = new Date(expense.date).toISOString().slice(0, 10);
-      totals.set(date, (totals.get(date) ?? 0) + Number(expense.amount ?? 0));
+      if (expense.date) {
+        const date = new Date(expense.date).toISOString().slice(0, 10);
+        totals.set(date, (totals.get(date) ?? 0) + Number(expense.amount ?? 0));
+      }
     });
 
     const sortedDates = Array.from(totals.keys()).sort();
